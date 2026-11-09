@@ -1626,6 +1626,9 @@ footer a:hover{color:var(--ink)}
   .drcard .drc-ic{width:27px;height:27px}
   .drcard .drc-ic svg{width:15px;height:15px}
   .drcard .drc-v{font-size:.74rem;line-height:1.3}
+
+  /* Gallery: four tiles per row instead of two (auto-fill's 150px minimum only fits two). */
+  .pg-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
 }
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
