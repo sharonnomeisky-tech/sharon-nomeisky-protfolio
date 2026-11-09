@@ -1,3 +1,4 @@
+<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Sharon Nomeisky</title>
@@ -44,8 +45,11 @@
   --blob-a:.32; --amb1:rgba(143,123,255,.24); --amb2:rgba(93,180,255,.13); color-scheme:dark}
 
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+/* The sideways-overflow guard belongs on <html>. On <body> it makes the body its own
+   scroll container, the body becomes document.scrollingElement, and the page stops
+   scrolling long before its end. */
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
 a{color:inherit}
 :focus-visible{outline:2px solid var(--iris);outline-offset:3px;border-radius:6px}
