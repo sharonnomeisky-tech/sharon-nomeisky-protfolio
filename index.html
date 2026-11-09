@@ -1560,14 +1560,12 @@ footer a:hover{color:var(--ink)}
 .cert .cap span{display:block;margin-top:5px;font-family:var(--he);font-size:.86rem;line-height:1.5;color:var(--muted);unicode-bidi:isolate}
 @media (max-width:900px){.cgrid{grid-template-columns:repeat(2,1fr);gap:18px}}
 @media (max-width:620px){.cgrid{grid-template-columns:1fr}}
-/* about — resume line */
-.cvline{margin-top:clamp(34px,4vw,52px);padding-top:clamp(24px,3vw,34px);border-top:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:14px}
-.cvlab{font-family:var(--he);font-size:.95rem;font-weight:600;color:var(--ink)}
-.cvbtns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-.cvb{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg-2);font-size:.92rem;font-weight:500;text-decoration:none;transition:color .2s,border-color .2s}
+/* about — resume buttons, directly under the closing line */
+.cvline{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;direction:rtl}
+.cvb{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg-2);font-size:1.02rem;font-weight:600;text-decoration:none;transition:color .2s,border-color .2s,background .2s}
 .cvb:hover{color:var(--ink);border-color:var(--ink)}
 .cvb.he{font-family:var(--he)}
-.cvb svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cvb svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 /* mobile tightening — must stay last so it wins over the base rules above */
 @media (max-width:620px){
   .hero{min-height:auto;padding-top:calc(110px + 40px);padding-bottom:56px}
@@ -1592,8 +1590,8 @@ footer a:hover{color:var(--ink)}
   .vp-row.arm.go .vp-l{animation:vcIn .7s cubic-bezier(.2,.7,.2,1) .45s both}
 }
 @media (max-width:620px){
-  .cvbtns{width:100%}
-  .cvb{flex:1 1 auto;justify-content:center;min-height:46px}
+  .cvline{width:100%}
+  .cvb{flex:1 1 auto;justify-content:center;min-height:50px}
 }
 /* ---- mobile-only case-study fixes (desktop is untouched: everything here is inside a max-width query) ---- */
 @media (max-width:700px){
@@ -1791,6 +1789,10 @@ footer a:hover{color:var(--ink)}
         <p class="ab-p he">הרקע שלי בעולמות הפיקוד, הניהול והובלת צוותים עיצב את הדרך שבה אני ניגש לאתגרים – שילוב של ראייה רחבה, חשיבה מחוץ לקופסה, ירידה לפרטים והיכולת להוציא דברים לפועל.</p>
         <p class="ab-p he">אני מאמין שהרעיונות הטובים ביותר נולדים בנקודת המפגש שבין יצירתיות, אסטרטגיה והבנה של אנשים. בין אם מדובר בפיתוח קונספט למותג, בניתוח התנהגות צרכנים או בבניית פרויקט מאפס, אני תמיד מחפש את הדרך ליצור משהו שלא רק נראה טוב, אלא גם מייצר ערך ומשאיר חותם.</p>
         <p class="ab-p kick he">אני לא רוצה רק לחשוב מחוץ לקופסה. אני רוצה להבין למה הקופסה קיימת מלכתחילה.</p>
+        <div class="cvline" id="resume">
+          <a class="cvb he" href="docs/Sharon-Nomeisky-CV-HE.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M8 11.5l4 4 4-4"/><path d="M5 19.5h14"/></svg>קורות חיים</a>
+          <a class="cvb" href="docs/Sharon-Nomeisky-CV-EN.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M8 11.5l4 4 4-4"/><path d="M5 19.5h14"/></svg>CV</a>
+        </div>
       </div>
     </div>
   </section>
@@ -1847,13 +1849,6 @@ footer a:hover{color:var(--ink)}
           <span class="shot"><img src="media/certs/cert-apm.webp" alt="Adaptive Project Management certificate, INT – Institute of Innovation &amp; Technology" loading="lazy" decoding="async" width="1100" height="825"></span>
           <span class="cap"><b>Adaptive Project Management</b><span>INT – Institute of Innovation &amp; Technology</span><span>אפריל–יוני 2026</span></span>
         </a>
-      </div>
-      <div class="cvline" id="resume">
-        <span class="cvlab he">קורות חיים | CV</span>
-        <div class="cvbtns">
-          <a class="cvb he" href="docs/Sharon-Nomeisky-CV-HE.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M8 11.5l4 4 4-4"/><path d="M5 19.5h14"/></svg>עברית</a>
-          <a class="cvb" href="docs/Sharon-Nomeisky-CV-EN.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11"/><path d="M8 11.5l4 4 4-4"/><path d="M5 19.5h14"/></svg>English</a>
-        </div>
       </div>
     </div>
   </section>
