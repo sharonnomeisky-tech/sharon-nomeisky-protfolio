@@ -1560,6 +1560,25 @@ footer a:hover{color:var(--ink)}
 .cert .cap span{display:block;margin-top:5px;font-family:var(--he);font-size:.86rem;line-height:1.5;color:var(--muted);unicode-bidi:isolate}
 @media (max-width:900px){.cgrid{grid-template-columns:repeat(2,1fr);gap:18px}}
 @media (max-width:620px){.cgrid{grid-template-columns:1fr}}
+/* projects page */
+.all-pj{display:flex;justify-content:center;margin-top:clamp(30px,4vw,46px)}
+.all-pj .btn i{font-style:normal;margin-inline-start:7px}
+.prj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px;margin-top:26px}
+.prj{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;background:var(--card);overflow:hidden;text-decoration:none;color:inherit;transition:border-color .2s,transform .2s,box-shadow .2s}
+.prj:hover{border-color:var(--ink);transform:translateY(-4px);box-shadow:0 18px 38px rgba(11,11,18,.1)}
+.prj-sh{display:block;aspect-ratio:16/10;background:var(--bg-2);border-bottom:1px solid var(--line);overflow:hidden}
+.prj-sh img{width:100%;height:100%;object-fit:cover;display:block}
+.prj-in{display:flex;flex-direction:column;flex:1;padding:18px 20px 20px;direction:rtl;text-align:right}
+.prj-t{font-family:var(--he);font-size:.8rem;color:var(--muted);unicode-bidi:isolate}
+.prj-n{margin-top:7px;font-family:var(--display);font-weight:600;font-size:1.22rem;color:var(--ink);letter-spacing:-.01em;unicode-bidi:isolate}
+.prj-d{margin-top:9px;font-family:var(--he);font-size:.92rem;line-height:1.6;color:var(--fg-2)}
+.prj-m{margin-top:11px;font-family:var(--he);font-size:.8rem;color:var(--muted)}
+.prj-go{margin-top:auto;padding-top:14px;font-family:var(--he);font-size:.88rem;font-weight:600;color:var(--iris)}
+.pg-sec{margin:34px 0 16px;font-family:var(--he);font-size:1.25rem;font-weight:600;color:var(--ink);direction:rtl;text-align:right}
+.pg-sec:first-child{margin-top:8px}
+.pg-lede{margin:0 0 6px;font-family:var(--he);font-size:1.02rem;line-height:1.75;color:var(--fg-2);direction:rtl;text-align:right;max-width:760px}
+.pg-none{font-family:var(--he);color:var(--muted);direction:rtl;text-align:center}
+@media (max-width:620px){.prj-grid{grid-template-columns:1fr;gap:16px}}
 /* about — resume buttons, directly under the closing line */
 .cvline{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;direction:rtl}
 .cvb{display:inline-flex;align-items:center;gap:10px;padding:14px 26px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--fg-2);font-size:1.02rem;font-weight:600;text-decoration:none;transition:color .2s,border-color .2s,background .2s}
@@ -1752,6 +1771,7 @@ footer a:hover{color:var(--ink)}
           </div>
         </a>
       </div>
+      <div class="all-pj"><a class="btn btn-line he" href="#projects">לכל הפרויקטים <i aria-hidden="true">←</i></a></div>
     </div>
   </section>
 
@@ -3087,24 +3107,90 @@ footer a:hover{color:var(--ink)}
       setTimeout(done, 620);
     } else { study.style.transition = 'opacity .35s ease'; study.style.opacity = '0'; setTimeout(done, 360); }
   }
-  var PG = {presentations:'Presentations', videos:'Videos', gallery:'Gallery', about:'About'}, pageOn = '';
-  var PJ = [{n:'CARTO', t:'Product · UX/UI · AI Build', d:['inv','pmo','one'], g:'cagal', v:[{s:VID_CARTO_PROMO, p:VID_CARTO_POSTER, c:'סרטון תדמית לאפליקציה'}]},
-    {n:'מר - פק', t:'קמפיין · גרילה · פרסומת · שלטי חוצות', d:['mp'], g:'mpgal', v:[{s:'media/marpek-commercial.mp4', p:'media/marpek-commercial.jpg', c:'סרט הפרסומת'},{s:'media/marpek-guerrilla.mp4', p:'media/marpek-guerrilla.jpg', c:'סרטון הגרילה'}]},
-    {n:'VOGUE × COMIC-CON', t:'שת״פ · קמפיין · סושיאל', d:['vc'], g:'vcgal', v:[{s:'media/vc-film.mp4', p:'media/vc-film.jpg', c:'סרטון התדמית', vert:true}]},
-    {n:'NETFLIX ENERGY', t:'ניהול מותג · פיתוח מוצר · קמפיין', d:['nf'], g:'nfgal', v:[{s:'media/nf-promo.mp4', p:'media/nf-promo.jpg', c:'סרטון התדמית'},{s:'media/nf-promo2.mp4', p:'media/nf-promo2.jpg', c:'סרטון תדמית נוסף'}]}];
+  var PG = {projects:'Projects', presentations:'Presentations', videos:'Videos', gallery:'Gallery', about:'About'}, pageOn = '';
+  /* ---------------------------------------------------------------------------
+     THE PROJECT LIST. This is the only place a project has to be added.
+     Every entry automatically appears on Projects, and its media flows into
+     Presentations (d), Gallery (g) and Videos (v) with no further wiring.
+
+       id   required, unique, letters/digits/dashes — becomes the #proj-<id> link
+       n    name shown on the card
+       t    the line of disciplines under the name
+       desc one or two sentences for the card
+       cs   case-study number (1-4) for the four featured projects; leave it out
+            and the card opens its own media page instead
+       d    deck keys from DECK_IMG   -> Presentations   (omit if none)
+       g    gallery key from DECK_IMG -> Gallery         (omit if none)
+       v    [{s:file, p:poster, c:caption, vert:true}]  -> Videos (omit if none)
+     --------------------------------------------------------------------------- */
+  var PJ = [{id:'carto', n:'CARTO', t:'Product · UX/UI · AI Build', cs:1, desc:'אפליקציה שמשווה את מחיר סל הקניות בין רשתות השיווק ומראה איפה הוא הכי זול. הובלתי אותה מהמחקר ועד אפליקציה עובדת.', d:['inv','pmo','one'], g:'cagal', v:[{s:VID_CARTO_PROMO, p:VID_CARTO_POSTER, c:'סרטון תדמית לאפליקציה'}]},
+    {id:'marpek', n:'מר - פק', t:'קמפיין · גרילה · פרסומת · שלטי חוצות', cs:2, desc:'קמפיין הומוריסטי לקרם המרפקים של Careline, שבנוי סביב דמות בדיונית: ד״ר מר פק, רופא המרפקים שנשאר בלי עבודה כי הקרם פתר את הבעיה.', d:['mp'], g:'mpgal', v:[{s:'media/marpek-commercial.mp4', p:'media/marpek-commercial.jpg', c:'סרט הפרסומת'},{s:'media/marpek-guerrilla.mp4', p:'media/marpek-guerrilla.jpg', c:'סרטון הגרילה'}]},
+    {id:'vogue', n:'VOGUE × COMIC-CON', t:'שת״פ · קמפיין · סושיאל', cs:3, desc:'הצעה לשיתוף פעולה בין מגזין ווג לכנס קומיקון: קמפיין שמכניס את תרבות הפופ לעולם האופנה, ומביא את קהל האופנה אל הכנס.', d:['vc'], g:'vcgal', v:[{s:'media/vc-film.mp4', p:'media/vc-film.jpg', c:'סרטון התדמית', vert:true}]},
+    {id:'netflix', n:'NETFLIX ENERGY', t:'ניהול מותג · פיתוח מוצר · קמפיין', cs:4, desc:'משקה אנרגיה של נטפליקס, עם פחית בעיצוב של הסדרות, לכל מי שלא רוצה להירדם באמצע הבינג׳.', d:['nf'], g:'nfgal', v:[{s:'media/nf-promo.mp4', p:'media/nf-promo.jpg', c:'סרטון התדמית'},{s:'media/nf-promo2.mp4', p:'media/nf-promo2.jpg', c:'סרטון תדמית נוסף'}]}];
+  function pjDecks(p){ return (p.d || []).filter(function(k){ return DECK_IMG[k]; }); }
+  function pjPics(p){ return (p.g && DECK_IMG[p.g]) ? DECK_IMG[p.g].pages : []; }
+  function pjVids(p){ return p.v || []; }
+  function pjById(id){ for (var i = 0; i < PJ.length; i++) if (PJ[i].id === id) return PJ[i]; return null; }
+  function pjCover(p){ var g = pjPics(p); if (g.length) return g[0];
+    var d = pjDecks(p); if (d.length) return DECK_IMG[d[0]].pages[0]; return ''; }
+  function pjHref(p){ return p.cs ? '#project-' + p.cs : '#proj-' + p.id; }
   function pageHTML(k){
-    var head = '<div class="pg-top wrap"><a class="btn btn-line st-back" href="#projects">← Home</a>' + (k === 'about' ? '' : '<span class="eyebrow"><i></i>' + PG[k] + '</span>') + '<h1 class="pg-h">' + PG[k] + '</h1></div>';
+    var one = /^proj-(.+)$/.exec(k), onePj = one ? pjById(one[1]) : null;
+    var title = onePj ? onePj.n : PG[k];
+    var backTo = onePj ? '#projects' : '#home', backTx = onePj ? '← All projects' : '← Home';
+    var head = '<div class="pg-top wrap"><a class="btn btn-line st-back" href="' + backTo + '">' + backTx + '</a>' + (k === 'about' ? '' : '<span class="eyebrow"><i></i>' + title + '</span>') + '<h1 class="pg-h">' + title + '</h1></div>';
     if (k === 'about') return head + document.getElementById('tpl-about').innerHTML;
     ALLG = [];
-    var body = PJ.map(function(p, i){
+    if (k === 'projects'){
+      var cardsHTML = PJ.map(function(p){
+        var cov = pjCover(p), bits = [];
+        if (pjDecks(p).length) bits.push(pjDecks(p).length + (pjDecks(p).length > 1 ? ' מצגות' : ' מצגת'));
+        if (pjPics(p).length) bits.push(pjPics(p).length + ' תמונות');
+        if (pjVids(p).length) bits.push(pjVids(p).length + (pjVids(p).length > 1 ? ' סרטונים' : ' סרטון'));
+        return '<a class="prj" href="' + pjHref(p) + '">' +
+          '<span class="prj-sh">' + (cov ? '<img src="' + cov + '" alt="" loading="lazy">' : '') + '</span>' +
+          '<span class="prj-in"><span class="prj-t">' + p.t + '</span><b class="prj-n">' + p.n + '</b>' +
+          (p.desc ? '<span class="prj-d he">' + p.desc + '</span>' : '') +
+          (bits.length ? '<span class="prj-m he">' + bits.join(' · ') + '</span>' : '') +
+          '<span class="prj-go">' + (p.cs ? 'לצפייה בפרויקט' : 'לצפייה בחומרים') + ' ←</span></span></a>';
+      }).join('');
+      return head + '<section class="pg-proj"><div class="wrap"><div class="prj-grid">' + cardsHTML + '</div></div></section>';
+    }
+    var list = onePj ? [onePj] : PJ;
+    var body = list.map(function(p, i){
       var inner = '';
-      if (k === 'presentations') inner = '<div class="dk-row">' + p.d.map(function(key){ var dk = DECK_IMG[key];
-          return '<figure class="dk"><button type="button" class="dk-open" data-deck="' + key + '" style="aspect-ratio:' + (dk.tall ? '1241/1755' : '16/9') + '" aria-label="Open ' + dk.title + '"><img src="' + dk.pages[0] + '" alt=""><span class="dk-hint">לחצו לצפייה</span></button><figcaption>' + dk.title + '<small>' + dk.pages.length + (dk.pages.length > 1 ? ' שקפים' : ' עמוד') + '</small></figcaption></figure>'; }).join('') + '</div>';
-      if (k === 'videos'){ if (!p.v.length) return ''; inner = '<div class="pg-vids">' + p.v.map(function(v){ return '<figure class="pg-vid' + (v.vert ? ' vert' : '') + '"><video src="' + v.s + '" poster="' + v.p + '" controls playsinline preload="none"></video><figcaption>' + v.c + '</figcaption></figure>'; }).join('') + '</div>'; }
-      if (k === 'gallery') inner = '<div class="ngx-grid pg-grid">' + DECK_IMG[p.g].pages.map(function(u){ var n = ALLG.push(u) - 1; return '<button type="button" class="ngx-th pg-th" data-i="' + n + '"><img src="' + u + '" alt="" loading="lazy"></button>'; }).join('') + '</div>';
-      return '<section class="pg-proj"><div class="wrap"><a class="pg-pn" href="#project-' + (i+1) + '">' + p.n + '</a><span class="pg-pt">' + p.t + '</span>' + inner + '</div></section>';
+      if (onePj){
+        var LBL = {presentations:'מצגות', gallery:'גלריה', videos:'סרטונים'};
+        inner = ['presentations','gallery','videos'].map(function(kk){
+          var h = pgMedia(kk, p); return h ? '<h2 class="pg-sec he">' + LBL[kk] + '</h2>' + h : '';
+        }).filter(Boolean).join('');
+        if (!inner) return '';
+        return '<section class="pg-proj"><div class="wrap">' + (p.desc ? '<p class="pg-lede he">' + p.desc + '</p>' : '') + inner + '</div></section>';
+      }
+      inner = pgMedia(k, p);
+      if (!inner) return '';
+      return '<section class="pg-proj"><div class="wrap"><a class="pg-pn" href="' + pjHref(p) + '">' + p.n + '</a><span class="pg-pt">' + p.t + '</span>' + inner + '</div></section>';
     }).join('');
-    return head + body + lbHTML() + (k === 'gallery' ? '<div class="ngx pg-v" hidden role="dialog" aria-modal="true" aria-label="Gallery"><div class="ngx-v"><button type="button" class="ngx-b" aria-label="Close">✕</button><button type="button" class="ngx-p" aria-label="Previous">‹</button><img class="ngx-big" alt=""><button type="button" class="ngx-n" aria-label="Next">›</button><span class="ngx-c"></span></div></div>' : '');
+    if (!body) body = '<section class="pg-proj"><div class="wrap"><p class="pg-none he">אין כאן חומרים עדיין.</p></div></section>';
+    return head + body + lbHTML() + ((k === 'gallery' || onePj) ? '<div class="ngx pg-v" hidden role="dialog" aria-modal="true" aria-label="Gallery"><div class="ngx-v"><button type="button" class="ngx-b" aria-label="Close">✕</button><button type="button" class="ngx-p" aria-label="Previous">‹</button><img class="ngx-big" alt=""><button type="button" class="ngx-n" aria-label="Next">›</button><span class="ngx-c"></span></div></div>' : '');
+  }
+  /* One project's media in one kind. Returns '' when the project has none of it,
+     so a project with only pictures simply never shows up under Presentations. */
+  function pgMedia(kind, p){
+    if (kind === 'presentations'){
+      var ds = pjDecks(p); if (!ds.length) return '';
+      return '<div class="dk-row">' + ds.map(function(key){ var dk = DECK_IMG[key];
+        return '<figure class="dk"><button type="button" class="dk-open" data-deck="' + key + '" style="aspect-ratio:' + (dk.tall ? '1241/1755' : '16/9') + '" aria-label="Open ' + dk.title + '"><img src="' + dk.pages[0] + '" alt=""><span class="dk-hint">לחצו לצפייה</span></button><figcaption>' + dk.title + '<small>' + dk.pages.length + (dk.pages.length > 1 ? ' שקפים' : ' עמוד') + '</small></figcaption></figure>'; }).join('') + '</div>';
+    }
+    if (kind === 'videos'){
+      var vs = pjVids(p); if (!vs.length) return '';
+      return '<div class="pg-vids">' + vs.map(function(v){ return '<figure class="pg-vid' + (v.vert ? ' vert' : '') + '"><video src="' + v.s + '" poster="' + v.p + '" controls playsinline preload="none"></video><figcaption>' + v.c + '</figcaption></figure>'; }).join('') + '</div>';
+    }
+    if (kind === 'gallery'){
+      var gs = pjPics(p); if (!gs.length) return '';
+      return '<div class="ngx-grid pg-grid">' + gs.map(function(u){ var n = ALLG.push(u) - 1; return '<button type="button" class="ngx-th pg-th" data-i="' + n + '"><img src="' + u + '" alt="" loading="lazy"></button>'; }).join('') + '</div>';
+    }
+    return '';
   }
   var ALLG = [];
   function initPgGal(){
@@ -3121,7 +3207,7 @@ footer a:hover{color:var(--ink)}
   }
   function openPage(k){
     if (current >= 0){ current = -1; dmTimers.forEach(clearTimeout); dmTimers = []; clearInterval(coverTimer); }
-    pageOn = k; study.className = 'study pg pg-' + k; study.innerHTML = pageHTML(k); study.hidden = false; study.scrollTop = 0; study.style.clipPath = 'none'; study.style.opacity = '';
+    pageOn = k; study.className = 'study pg pg-' + (PG[k] ? k : 'one'); study.innerHTML = pageHTML(k); study.hidden = false; study.scrollTop = 0; study.style.clipPath = 'none'; study.style.opacity = '';
     document.documentElement.classList.add('pg-open'); study.style.overflow = ''; document.documentElement.style.overflow = ''; window.scrollTo(0, 0);
     document.querySelectorAll('.chrome a[href^="#"]').forEach(function(a){ a.classList.toggle('on', a.getAttribute('href') === '#' + k); });
     study.classList.remove('in'); void study.offsetWidth; study.classList.add('in');
@@ -3133,14 +3219,15 @@ footer a:hover{color:var(--ink)}
   function route(animate){
     var h = location.hash.slice(1);
     var m = /^project-(\d+)$/.exec(h), i = m ? parseInt(m[1],10) - 1 : -1;
-    if (PG[h]){ if (pageOn !== h) openPage(h); return; }
+    var pm = /^proj-(.+)$/.exec(h);
+    if (PG[h] || (pm && pjById(pm[1]))){ if (pageOn !== h) openPage(h); return; }
     if (pageOn){ closePage(); if (i < 0) return; }
     if (i >= 0 && i < N){ if (i !== current) open(i, animate); }
     else close();
   }
   cards.forEach(function(c){ c.addEventListener('click', function(){ lastCard = c; }); });
   window.addEventListener('hashchange', function(){ route(true); });
-  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && (current >= 0 || pageOn) && !ngxOpen) location.hash = 'projects'; });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && (current >= 0 || pageOn) && !ngxOpen) location.hash = pageOn && pageOn.indexOf('proj-') === 0 ? 'projects' : 'home'; });
   route(false);
 })();
 </script>
