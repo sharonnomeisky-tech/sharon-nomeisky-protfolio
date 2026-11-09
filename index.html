@@ -1590,6 +1590,38 @@ footer a:hover{color:var(--ink)}
   .cvbtns{width:100%}
   .cvb{flex:1 1 auto;justify-content:center;min-height:46px}
 }
+/* ---- mobile-only case-study fixes (desktop is untouched: everything here is inside a max-width query) ---- */
+@media (max-width:700px){
+  /* Netflix "Brand Model": .nw-0..3 still claim grid columns 1 and 3, so the single-column
+     rule above re-creates implicit columns and crushes two blocks to 0 width. Force one column. */
+  .nf-wheel{grid-template-columns:minmax(0,1fr)!important;gap:14px}
+  .nf-wheel .nw-core{grid-column:1!important;grid-row:auto!important;width:min(186px,52vw);margin:0 auto 10px}
+  .nf-wheel .nw-q{grid-column:1!important;grid-row:auto!important;align-items:stretch!important;
+    padding:12px 14px!important;border-inline-start:2px solid #E50914;border-radius:0 10px 10px 0}
+  .nf-wheel .nw-q small{margin-bottom:4px}
+
+  /* CARTO "Build": .demo is a flex item under align-items:flex-start, so it shrank to ~71px. */
+  .demo{width:100%;justify-items:center}
+  .demo .dm-stage{max-width:min(240px,64vw)}
+
+  /* Mr-Pek "Concept": the SVG had min-width:480px, which forced sideways scrolling. */
+  .xray{overflow-x:visible;max-width:none}
+  .xray svg{min-width:0}
+
+  /* Mr-Pek "The Character": keep the card beside its details instead of wrapping under it. */
+  .drcard{flex-wrap:nowrap;gap:13px;align-items:center;justify-content:space-between}
+  .drcard .drc-id{width:auto;flex:0 0 40%;max-width:40%;min-width:0}
+  .drcard .drc-id figcaption{font-size:.68rem;line-height:1.35}
+  .drcard .drc{flex:1 1 60%;min-width:0}
+  .drcard .drc-n{font-size:1.45rem}
+  .drcard .drc-r{margin-top:4px;font-size:.78rem}
+  .drcard .drc-rule{max-width:120px;height:2px;margin:9px 0 11px}
+  .drcard .drc ul{gap:9px}
+  .drcard .drc li{gap:8px}
+  .drcard .drc-ic{width:27px;height:27px}
+  .drcard .drc-ic svg{width:15px;height:15px}
+  .drcard .drc-v{font-size:.74rem;line-height:1.3}
+}
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
