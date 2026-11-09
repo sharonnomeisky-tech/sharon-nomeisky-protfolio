@@ -522,8 +522,13 @@ html.st-locked,html.st-locked body{overflow:hidden}
 .dm-ch button.on{background:var(--soft,var(--card-2));color:var(--ink);font-weight:600}
 .dm-ch button.on span{color:var(--iris)}
 .dm-stage{display:flex;flex-direction:column;align-items:center;gap:12px;direction:ltr;width:100%;max-width:200px}
-.dm-phone{width:100%;aspect-ratio:853/1844;border-radius:28px;padding:6px;background:#0E1609;box-shadow:0 44px 70px -34px rgba(20,45,0,.5)}
-.dm-screen{position:relative;width:100%;height:100%;border-radius:23px;overflow:hidden;background:#FFFFFF;isolation:isolate}
+/* The phone keeps its shape with a percentage padding rather than aspect-ratio, and the screen is
+   positioned rather than sized with height:100%. Mobile Safari does not reliably resolve a
+   percentage height against a parent whose height comes from aspect-ratio, which left the screen
+   at zero height — the frames were loaded but the phone rendered solid black. */
+.dm-phone{position:relative;width:100%;height:0;padding:0 0 216.18%;aspect-ratio:auto;border-radius:28px;background:#0E1609;box-shadow:0 44px 70px -34px rgba(20,45,0,.5)}
+.dm-screen{position:absolute;top:6px;right:6px;bottom:6px;left:6px;width:auto;height:auto;border-radius:23px;overflow:hidden;background:#FFFFFF;isolation:isolate}
+.dm-img{top:0;right:0;bottom:0;left:0}
 .dm-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
 .dm-img.on{opacity:1;z-index:1}
 .dm-img.cut{opacity:1;z-index:2}
